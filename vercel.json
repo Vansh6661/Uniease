@@ -1,8 +1,7 @@
 {
-  "root": "frontend",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install --legacy-peer-deps",
-  "outputDirectory": "build",
+  "buildCommand": "npm --prefix ./frontend run build",
+  "installCommand": "npm --prefix ./frontend install --legacy-peer-deps",
+  "outputDirectory": "frontend/build",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
