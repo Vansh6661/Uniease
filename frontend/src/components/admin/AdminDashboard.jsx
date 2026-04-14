@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchComplaints, updateComplaintStatus } from '../../services/api/complaintAPI';
 
@@ -10,12 +10,7 @@ export default function AdminDashboard() {
   const [filterStatus, setFilterStatus] = useState('all');
   const [updatingId, setUpdatingId] = useState(null);
 
-  // Fetch complaints on component mount and when filters change
-  useEffect(() => {
-    loadComplaints();
-  }, []);
-
-  const loadComplaints = async () => {
+  const loadComplaints = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -34,7 +29,12 @@ export default function AdminDashboard() {
     }
 
     setLoading(false);
-  };
+  }, [filterStatus]);
+
+  // Fetch complaints on component mount and when filters change
+  useEffect(() => {
+    loadComplaints();
+  }, [loadComplaints]);
 
   // Filter complaints by search term
   const filteredComplaints = complaints.filter((complaint) => {

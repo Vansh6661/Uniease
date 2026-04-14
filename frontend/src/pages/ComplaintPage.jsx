@@ -6,7 +6,6 @@ import StatusBadge from "../components/complaints/StatusBadge";
 
 export default function ComplaintPage() {
   const { complaints, isLoading, error, createComplaint, fetchComplaints } = useComplaint();
-  const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState("new");
   const [category, setCategory] = useState("");
@@ -40,14 +39,14 @@ export default function ComplaintPage() {
   // Fetch complaints on mount
   useEffect(() => {
     fetchComplaints();
-  }, []);
+  }, [fetchComplaints]);
 
   // Refresh complaints when tab changes to track
   useEffect(() => {
     if (activeTab === "track") {
       fetchComplaints();
     }
-  }, [activeTab]);
+  }, [activeTab, fetchComplaints]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
