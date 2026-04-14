@@ -1,8 +1,0 @@
-{
-  "build": {
-    "builder": "dockerfile",
-    "dockerfile": "backend/Dockerfile",
-    "buildContext": "."
-  }
-}
-
