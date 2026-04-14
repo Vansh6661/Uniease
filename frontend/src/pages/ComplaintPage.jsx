@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useComplaint } from "../hooks/useComplaint";
-import { useAuth } from "../hooks/useAuth";
 import StatusBadge from "../components/complaints/StatusBadge";
 
 export default function ComplaintPage() {
