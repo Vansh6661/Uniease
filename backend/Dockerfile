@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install production dependencies
+RUN npm install --production
 
 # Copy application code
 COPY src ./src
@@ -17,5 +17,6 @@ COPY server.js ./
 
 EXPOSE 3001
 
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
+
 
