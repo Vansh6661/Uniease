@@ -1,8 +1,9 @@
 [build]
 builder = "dockerfile"
-dockerfile = "Dockerfile"
+dockerfile = "backend/Dockerfile"
+buildContext = "."
 
 [deploy]
-startCommand = "npm start"
+startCommand = "node server.js"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
