@@ -14,7 +14,6 @@ COPY database ./database
 COPY migrations ./migrations
 COPY scripts ./scripts
 COPY server.js ./
-COPY .env.production ./.env
 
 EXPOSE 3001
 
