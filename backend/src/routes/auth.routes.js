@@ -3,6 +3,21 @@ const AuthService = require('../services/auth/authService');
 const { verifyJWT } = require('../middleware/auth');
 
 const router = express.Router();
+const isProduction = process.env.NODE_ENV === 'production';
+
+const getRefreshCookieOptions = (includeMaxAge = true) => {
+  const options = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+  };
+
+  if (includeMaxAge) {
+    options.maxAge = 7 * 24 * 60 * 60 * 1000;
+  }
+
+  return options;
+};
 
 /**
  * POST /api/auth/register
@@ -64,12 +79,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Set refresh token in httpOnly cookie
-    res.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    res.cookie('refreshToken', result.refreshToken, getRefreshCookieOptions(true));
 
     res.json({
       success: true,
@@ -90,7 +100,7 @@ router.post('/login', async (req, res) => {
  */
 router.post('/refresh-token', async (req, res) => {
   try {
-    const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
+    const refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
 
     if (!refreshToken) {
       return res.status(400).json({
@@ -124,9 +134,7 @@ router.post('/refresh-token', async (req, res) => {
 router.post('/logout', (req, res) => {
   try {
     res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...getRefreshCookieOptions(false),
     });
 
     res.json({
